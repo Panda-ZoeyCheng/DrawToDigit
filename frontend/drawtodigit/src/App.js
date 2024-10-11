@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import Canvas from "./components/Canvas";
 
 function App() {
+  const [result, setResult] = useState(null);
+
+  const handlePredict = async (imageData) => {
+    try {
+      const response = await fetch("http://localhost:500-/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: imageData }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.prediction);
+      } else {
+        console.error("Prediction failed.");
+      }
+    } catch (error) {
+      console.error("Error in fetching prediction: ", error);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Draw to Digit</h1>
+      <Canvas onPredict={handlePredict} />
+      {result !== null && <h2>Predict Digit: {result}</h2>}
     </div>
   );
 }
