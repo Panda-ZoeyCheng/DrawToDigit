@@ -128,3 +128,21 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore Python virtual environment
+venv/
+backend/venv/
+
+.env
+
+__pycache__/
+*.pyc
+
+.ipynb_checkpoints/
+
+*.log
+
+dist/
+build/
+
+.vscode/

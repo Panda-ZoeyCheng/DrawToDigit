@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-const Canvas = ({ onPredict }) => {
+const Canvas = ({ onPredict, resetResult }) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
@@ -14,6 +14,7 @@ const Canvas = ({ onPredict }) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
+    resetResult();
   };
 
   const handleMouseDown = (event) => {
