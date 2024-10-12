@@ -21,7 +21,13 @@ The backend is built using the Flask framework, responsible for receiving handwr
    ```
 
 2. Install Dependency:
+
+   ```bash
    pip install -r requirements.txt
 
+   ```
+
 3. Start:
+   ```bash
    python app.pu --port=5001
+   ```

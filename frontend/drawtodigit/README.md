@@ -18,4 +18,6 @@ The frontend is built using React, providing a user interface that allows users 
    ```
 
 2. Start:
+   ```bash
    npm start
+   ```
