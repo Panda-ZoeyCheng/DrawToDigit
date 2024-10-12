@@ -1,14 +1,13 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Canvas from "./components/Canvas";
-import Result from "./components/Result";
+import Help from "./components/Help";
 
 function App() {
-  const [result, setResult] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState("waiting for predict ...");
+  const canvasRef = useRef();
 
   const handlePredict = async (imageData) => {
-    setIsLoading(true);
     setResult(null);
 
     try {
@@ -30,20 +29,40 @@ function App() {
     } catch (error) {
       console.error("Error in fetching prediction: ", error);
       setResult("Error occurred");
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const resetResult = () => {
-    setResult(null);
+    setResult("waiting for predict ...");
   };
 
   return (
-    <div className="App">
-      <h1>Draw to Digit</h1>
-      <Canvas onPredict={handlePredict} resetResult={resetResult} />
-      {isLoading ? <p>Predicting...</p> : <Result result={result} />}
+    <div className="outer-container">
+      <div className="title">Draw to Digit</div>
+      <div className="container">
+        <div className="card">
+          <Help message="Draw a digit in the canvas, then click 'Predict' to see the result. Use 'Clear' to reset the canvas." />
+          <div className="canvas-container">
+            <Canvas
+              ref={canvasRef}
+              onPredict={handlePredict}
+              resetResult={resetResult}
+            />
+            <div className="button-group">
+              <button onClick={() => canvasRef.current.handleSubmit()}>
+                Predict
+              </button>
+              <button onClick={() => canvasRef.current.handleClear()}>
+                Clear
+              </button>
+            </div>
+          </div>
+          <div className="result-container">
+            <h2>Result:</h2>
+            <p>{result}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

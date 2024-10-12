@@ -1,21 +1,59 @@
-import React, { useRef, useState } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 
-const Canvas = ({ onPredict, resetResult }) => {
+const Canvas = forwardRef((props, ref) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  const handleSubmit = () => {
-    const canvas = canvasRef.current;
-    const imageData = canvas.toDataURL("image/png");
-    onPredict(imageData);
-  };
+  useImperativeHandle(ref, () => ({
+    handleSave() {
+      const canvas = canvasRef.current;
+      const imageData = canvas.toDataURL("image/png");
 
-  const handleClear = () => {
+      fetch("http://localhost:5001/save-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: imageData }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Image saved successfully:", data);
+        })
+        .catch((error) => {
+          console.error("Error saving image:", error);
+        });
+    },
+    handleSubmit() {
+      const canvas = canvasRef.current;
+      const imageData = canvas.toDataURL("image/png");
+      props.onPredict(imageData);
+    },
+    handleClear() {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "white";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      props.resetResult();
+    },
+  }));
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    resetResult();
-  };
+
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }, []);
 
   const handleMouseDown = (event) => {
     const canvas = canvasRef.current;
@@ -55,12 +93,8 @@ const Canvas = ({ onPredict, resetResult }) => {
         onMouseUp={handleMouseUp}
         onMouseOut={handleMouseUp}
       />
-      <div>
-        <button onClick={handleSubmit}>Predict</button>
-        <button onClick={handleClear}>Clear</button>
-      </div>
     </div>
   );
-};
+});
 
 export default Canvas;
