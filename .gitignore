@@ -130,20 +130,28 @@ dist
 .pnp.*
 
 # Ignore Python virtual environment
+# Ignore Python virtual environments
 venv/
 backend/venv/
+backend/env/
 
+# Ignore environment files
 .env
 
+# Ignore Python cache files
 __pycache__/
-
 *.pyc
 
+# Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
+
+# Ignore log files
 *.log
 
+# Ignore build and distribution directories
 dist/
 build/
 
+# Ignore VS Code settings
 .vscode/
