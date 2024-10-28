@@ -40,7 +40,7 @@ def save_image():
         image_bytes = base64.b64decode(image_data)
         image = Image.open(BytesIO(image_bytes))
 
-        save_dir = 'saved_images'
+        save_dir = '/tmp/saved_images'
         os.makedirs(save_dir, exist_ok=True)
         image_name = f'{save_dir}/digit_{len(os.listdir(save_dir))}.jpg'
 
@@ -54,5 +54,5 @@ def save_image():
         return jsonify({'error': 'Failed to save image'}), 500
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5001)
