@@ -72,14 +72,17 @@ jobs:
           EC2_KEY: ${{ secrets.EC2_KEY }}
         run: |
           # Save the SSH key to a file directly
-          echo "${EC2_KEY}" > ~/ec2-key.pem
-          chmod 600 ~/ec2-key.pem
+          echo "${EC2_KEY}" > ~/drawtodigit.pem
+          chmod 600 ~/drawtodigit.pem
+
+          # Verify that the key file exists and has the correct permissions
+          ls -l ~/drawtodigit.pem
 
           # Transfer backend files to EC2
-          scp -o StrictHostKeyChecking=no -i ~/ec2-key.pem -r backend/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/backend
+          scp -o StrictHostKeyChecking=no -i ~/drawtodigit.pem -r backend/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/backend
 
           # Connect to EC2 and restart the backend server
-          ssh -o StrictHostKeyChecking=no -i ~/ec2-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/drawtodigit.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/backend
             source venv/bin/activate
             nohup python app.py &
