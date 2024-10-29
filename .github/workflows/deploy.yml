@@ -72,8 +72,8 @@ jobs:
           EC2_KEY: ${{ secrets.EC2_KEY }}
         run: |
           # Save the SHH key to a file
-          echo "${EC2_KEY}" | base64 -d > ~/drawtodigit.pem
-          chmod 600 ~/drawtodigit.pem
+          echo "${EC2_KEY}" | base64 -d > ~/ec2-key.pem
+          chmod 600 ~/ec2-key.pem
 
           # Transfer backend files to EC2
           scp -o StrictHostKeyChecking=no -i ~/ec2-key.pem -r backend/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/backend
