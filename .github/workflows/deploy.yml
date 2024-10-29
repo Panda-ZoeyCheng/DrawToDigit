@@ -61,7 +61,7 @@ jobs:
         run: |
           cd backend
           python -m venv venv
-          source venv/bin/active
+          source venv/bin/activate
           pip install -r requirements.txt
 
       # Backend: Deploy to EC2
