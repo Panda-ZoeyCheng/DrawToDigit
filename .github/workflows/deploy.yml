@@ -23,12 +23,12 @@ jobs:
       # Frontend: Install dependencies and build project
       - name: Install frontend dependencies
         run: |
-          cd frontend
+          cd frontend/drawtodigit
           npm install
 
       - name: Build frontend
         run: |
-          cd frontend
+          cd frontend/drawtodigit
           npm run build
 
       # Frontend: Deploy to S3
