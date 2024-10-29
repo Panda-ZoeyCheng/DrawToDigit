@@ -64,22 +64,23 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-- name: Deploy backend to EC2
-  env:
-    EC2_HOST: ${{ secrets.EC2_HOST }}
-    EC2_USER: ${{ secrets.EC2_USER }}
-    EC2_KEY: ${{ secrets.EC2_KEY }}
-  run: |
-    # Save the SSH key to a file directly
-    echo "${EC2_KEY}" > ~/ec2-key.pem
-    chmod 600 ~/ec2-key.pem
+      # Backend: Deploy to EC2
+      - name: Deploy backend to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+        run: |
+          # Save the SSH key to a file directly
+          echo "${EC2_KEY}" > ~/ec2-key.pem
+          chmod 600 ~/ec2-key.pem
 
-    # Transfer backend files to EC2
-    scp -o StrictHostKeyChecking=no -i ~/ec2-key.pem -r backend/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/backend
+          # Transfer backend files to EC2
+          scp -o StrictHostKeyChecking=no -i ~/ec2-key.pem -r backend/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/backend
 
-    # Connect to EC2 and restart the backend server
-    ssh -o StrictHostKeyChecking=no -i ~/ec2-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-      cd ~/backend
-      source venv/bin/activate
-      nohup python app.py &
-    EOF
+          # Connect to EC2 and restart the backend server
+          ssh -o StrictHostKeyChecking=no -i ~/ec2-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/backend
+            source venv/bin/activate
+            nohup python app.py &
+          EOF
