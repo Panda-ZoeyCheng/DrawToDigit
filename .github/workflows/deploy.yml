@@ -69,10 +69,10 @@ jobs:
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_KEY: ${{ secrets.EC2_KEY }}
+          EC2_KEY: ${{ secrets.EC2_KEY_BASE64 }}
         run: |
           # Decode and save the SSH key
-          echo "${EC2_KEY}" | base64 -d > ~/drawtodigit.pem
+          echo "${EC2_KEY_BASE64}" | base64 -d > ~/drawtodigit.pem
           chmod 600 ~/drawtodigit.pem
 
           # Verify that the key file exists and has the correct permissions
