@@ -2,10 +2,11 @@
   "dev": {
     "app_function": "app.app",
     "aws_region": "ap-southeast-2",
-    "exclude": ["boto3", "dateutil", "botocore", "s3transfer", "concurrent"],
-    "profile_name": "default",
-    "project_name": "backend",
+    "profile_name": "drawtodigit",
+    "project_name": "drawtodigit",
     "runtime": "python3.11",
-    "s3_bucket": "zappa-plotbot"
+    "s3_bucket": "zappa-drawtodigit",
+    "slim_handler": true,
+    "exclude": ["boto3", "botocore", "s3transfer"]
   }
 }
